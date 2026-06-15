@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 const portfolioProjects = [
   {
@@ -31,6 +32,7 @@ export default function PortfolioSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { ref, isVisible } = useFadeInOnScroll();
 
   const filteredProjects = activeTab === "All" 
     ? portfolioProjects 
@@ -61,7 +63,16 @@ export default function PortfolioSection() {
   };
 
   return (
-    <section id="portfolio" className="bg-beige-200 py-24 lg:py-32 overflow-hidden">
+    <section 
+      id="portfolio" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-beige-200 py-24 lg:py-32 overflow-hidden"
+    >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-end justify-between mb-12">
           

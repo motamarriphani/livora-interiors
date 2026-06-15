@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 const stats = [
   { value: 3, label: 'Projects Completed', suffix: '+' },
@@ -46,8 +47,20 @@ function Counter({ end, suffix }: { end: number, suffix: string }) {
 }
 
 export default function StatsSection() {
+  const { ref, isVisible } = useFadeInOnScroll();
+
   return (
-    <section id="stats" data-theme="dark" className="bg-[#2c3426] py-16 lg:py-24 relative z-30">
+    <section 
+      id="stats" 
+      data-theme="dark" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-[#2c3426] py-16 lg:py-24 relative z-30"
+    >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-beige-100/10">
           {stats.map((stat, index) => (

@@ -1,8 +1,20 @@
 import React from 'react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 export default function HeroSection() {
+  const { ref, isVisible } = useFadeInOnScroll();
+
   return (
-    <section id="hero" className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden">
+    <section 
+      id="hero" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden"
+    >
       {/* Background Image Container */}
       <div className="absolute inset-0 z-0">
         <img 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 const faqs = [
   {
@@ -30,13 +31,23 @@ const faqs = [
 
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { ref, isVisible } = useFadeInOnScroll();
 
   const toggleOpen = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section id="faq" className="bg-white py-24 lg:py-32">
+    <section 
+      id="faq" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-white py-24 lg:py-32"
+    >
       <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center space-x-4 mb-6">

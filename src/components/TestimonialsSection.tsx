@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 const testimonials = [
   {
@@ -26,6 +27,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { ref, isVisible } = useFadeInOnScroll();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,7 +40,17 @@ export default function TestimonialsSection() {
   const prev = () => setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section id="testimonials" data-theme="dark" className="bg-[#2c3426] py-24 lg:py-32">
+    <section 
+      id="testimonials" 
+      data-theme="dark" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-[#2c3426] py-24 lg:py-32"
+    >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center space-x-4 mb-6">

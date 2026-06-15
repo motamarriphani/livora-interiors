@@ -1,8 +1,20 @@
 import React from 'react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 export default function AboutSection() {
+  const { ref, isVisible } = useFadeInOnScroll();
+
   return (
-    <section id="about" className="bg-beige-100 py-24 lg:py-32">
+    <section 
+      id="about" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-beige-100 py-24 lg:py-32"
+    >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           

@@ -1,5 +1,6 @@
 import { Armchair, Home, PaintBucket, PenTool } from 'lucide-react';
 import React from 'react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 const services = [
   {
@@ -29,8 +30,19 @@ const services = [
 ];
 
 export default function ServicesSection() {
+  const { ref, isVisible } = useFadeInOnScroll();
+
   return (
-    <section id="services" className="bg-beige-100 pb-24 lg:pb-32">
+    <section 
+      id="services" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-beige-100 pb-24 lg:pb-32"
+    >
       <div className="container mx-auto px-6 lg:px-12">
         
         <div className="text-center mb-16">

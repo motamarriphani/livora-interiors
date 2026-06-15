@@ -1,5 +1,6 @@
 import { Armchair, Star, LayoutTemplate, Leaf } from 'lucide-react';
 import React from 'react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 const benefits = [
   {
@@ -25,8 +26,20 @@ const benefits = [
 ];
 
 export default function BenefitsSection() {
+  const { ref, isVisible } = useFadeInOnScroll();
+
   return (
-    <section id="benefits" data-theme="dark" className="relative bg-olive-900 z-20">
+    <section 
+      id="benefits" 
+      data-theme="dark" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="relative bg-olive-900 z-20"
+    >
       {/* Decorative Curve - Using SVG for perfect curve overlaying the hero slightly */}
       <div className="absolute left-0 right-0 top-0 -translate-y-[99%] w-full overflow-hidden leading-none text-olive-900">
         <svg viewBox="0 0 1440 120" fill="currentColor" className="w-full h-auto" preserveAspectRatio="none">

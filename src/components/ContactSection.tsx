@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, CheckCircle } from 'lucide-react';
+import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const { ref, isVisible } = useFadeInOnScroll();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +34,17 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" data-theme="dark" className="bg-[#2c3426] py-24 lg:py-32">
+    <section 
+      id="contact" 
+      data-theme="dark" 
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease'
+      }}
+      className="bg-[#2c3426] py-24 lg:py-32"
+    >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           
