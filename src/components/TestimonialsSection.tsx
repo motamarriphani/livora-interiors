@@ -50,13 +50,13 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="max-w-3xl mx-auto relative cursor-grab active:cursor-grabbing">
-          <div className="overflow-hidden rounded-2xl relative">
+          <div className="overflow-hidden w-full rounded-2xl relative">
             <div 
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
             >
               {testimonials.map((t, i) => (
-                <div key={i} className="w-full flex-shrink-0 p-8 md:p-12 bg-[#3A4232] rounded-2xl">
+                <div key={i} className="w-full flex-shrink-0 box-border p-8 md:p-12 bg-[#3A4232] rounded-2xl">
                   <div className="flex mb-6 text-yellow-500">
                     {/* 5 Stars */}
                     {'★★★★★'.split('').map((star, i) => (

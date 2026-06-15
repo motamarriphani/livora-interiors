@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
@@ -58,10 +59,8 @@ export default function FaqSection() {
                   <h3 className="text-lg font-medium text-olive-900 pr-8">
                     {faq.question}
                   </h3>
-                  <div className={`w-8 h-8 rounded-full border border-olive-900/20 flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-olive-900 text-white' : 'text-olive-900'}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${isOpen ? 'rotate-45' : ''}`}>
-                      <path d="M5 12h14"/><path d="M12 5v14"/>
-                    </svg>
+                  <div className={`w-8 h-8 rounded-full border border-olive-900/20 flex items-center justify-center shrink-0 transition-colors duration-300 ${isOpen ? 'bg-olive-900 text-white' : 'text-olive-900'}`}>
+                    <ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                   </div>
                 </button>
                 <div 
