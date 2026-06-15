@@ -24,12 +24,15 @@ export default function WhatsAppButton() {
           <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-white"></div>
         </div>
 
+        {/* Pulse Ring */}
+        <div className="absolute inset-0 bg-[#25D366] rounded-full z-0 animate-pulse-ring pointer-events-none" />
+
         {/* Button */}
         <a
-          href="https://wa.me/8886767991"
+          href="https://wa.me/918886767991?text=Hi%20Livora%20Interiors!%20I%27d%20like%20to%20discuss%20an%20interior%20design%20project."
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-[60px] h-[60px] bg-[#25D366] text-white rounded-full shadow-lg hover:scale-105 transition-transform"
+          className="relative z-10 flex items-center justify-center w-[60px] h-[60px] bg-[#25D366] text-white rounded-full shadow-lg hover:scale-105 transition-transform"
           aria-label="Chat with us on WhatsApp"
         >
           <svg
