@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden">
+    <section id="hero" className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden">
       {/* Background Image Container */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -24,9 +24,14 @@ export default function HeroSection() {
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-lg font-light leading-relaxed">
             We create timeless, functional and inspiring interiors tailored to your lifestyle and personality.
           </p>
-          <button className="bg-white text-olive-900 px-8 py-4 text-sm font-semibold tracking-wider uppercase hover:bg-beige-100 transition-colors">
-            Explore Our Work
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a href="#portfolio" className="w-full sm:w-auto inline-flex items-center justify-center bg-white text-olive-900 px-8 py-4 text-sm font-semibold tracking-wider uppercase hover:bg-beige-100 transition-colors">
+              Explore Our Work
+            </a>
+            <a href="#contact" className="w-full sm:w-auto inline-flex items-center justify-center border border-white text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase hover:bg-white/10 transition-colors">
+              Book a Free Consultation &rarr;
+            </a>
+          </div>
         </div>
       </div>
     </section>

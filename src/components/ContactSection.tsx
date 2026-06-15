@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="bg-[#2c3426] py-24 lg:py-32">
+    <section id="contact" data-theme="dark" className="bg-[#2c3426] py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           

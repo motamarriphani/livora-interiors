@@ -47,7 +47,7 @@ function Counter({ end, suffix }: { end: number, suffix: string }) {
 
 export default function StatsSection() {
   return (
-    <section className="bg-[#2c3426] py-16 lg:py-24 relative z-30">
+    <section id="stats" data-theme="dark" className="bg-[#2c3426] py-16 lg:py-24 relative z-30">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-beige-100/10">
           {stats.map((stat, index) => (

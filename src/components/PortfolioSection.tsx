@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const portfolioProjects = [
   {
@@ -27,13 +28,40 @@ const categories = ["All", "Residential", "Commercial", "Hospitality"];
 
 export default function PortfolioSection() {
   const [activeTab, setActiveTab] = useState("All");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const filteredProjects = activeTab === "All" 
     ? portfolioProjects 
     : portfolioProjects.filter(p => p.category === activeTab);
 
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    handleScroll();
+  }, [filteredProjects, activeTab]);
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  };
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="bg-beige-200 py-24 lg:py-32 overflow-hidden">
+    <section id="portfolio" className="bg-beige-200 py-24 lg:py-32 overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-end justify-between mb-12">
           
@@ -72,26 +100,30 @@ export default function PortfolioSection() {
 
         </div>
 
-        <div className="relative mt-8">
-          <div className="flex space-x-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide">
+        <div className="relative mt-8 relative group">
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex space-x-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide relative z-10"
+          >
             {filteredProjects.map((project, i) => (
               <div 
                 key={`${project.title}-${i}`} 
-                className="flex-none w-[85%] md:w-[45%] lg:w-[35%] snap-center first:pl-0 group relative overflow-hidden"
+                className="flex-none w-[85%] md:w-[45%] lg:w-[35%] snap-center first:pl-0 group/card relative overflow-hidden"
                 data-category={project.category}
               >
                 <img 
                   src={project.image} 
                   alt={project.title} 
-                  className="w-full h-[400px] md:h-[450px] object-cover shadow-sm transition-transform duration-700 group-hover:scale-105" 
+                  className="w-full h-[400px] md:h-[450px] object-cover shadow-sm transition-transform duration-700 group-hover/card:scale-105" 
                 />
                 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-olive-900/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-center p-6">
-                  <h3 className="text-2xl font-serif text-white mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="absolute inset-0 bg-olive-900/80 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-center p-6">
+                  <h3 className="text-2xl font-serif text-white mb-2 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500">
                     {project.title}
                   </h3>
-                  <span className="text-xs tracking-widest uppercase text-white/80 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                  <span className="text-xs tracking-widest uppercase text-white/80 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500 delay-75">
                     {project.category}
                   </span>
                 </div>
@@ -99,11 +131,20 @@ export default function PortfolioSection() {
             ))}
           </div>
           
-          {/* Nav Button Fake Overlay */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-6 hidden md:block pointer-events-none">
-            <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-olive-900 shadow-md hover:bg-beige-100 transition-colors pointer-events-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
+          {/* Nav Buttons */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between z-20 pointer-events-none px-4 md:-mx-6 lg:-mx-12">
+             <button 
+                onClick={scrollLeft}
+                className={`w-12 h-12 rounded-full bg-white flex items-center justify-center text-olive-900 shadow-md hover:bg-beige-100 transition-all pointer-events-auto ${canScrollLeft ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'}`}
+             >
+                <ChevronLeft size={20} />
+             </button>
+             <button 
+                onClick={scrollRight}
+                className={`w-12 h-12 rounded-full bg-white flex items-center justify-center text-olive-900 shadow-md hover:bg-beige-100 transition-all pointer-events-auto ${canScrollRight ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 pointer-events-none'}`}
+             >
+                <ChevronRight size={20} />
+             </button>
           </div>
         </div>
         

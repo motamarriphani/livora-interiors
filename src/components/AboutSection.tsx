@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AboutSection() {
   return (
-    <section className="bg-beige-100 py-24 lg:py-32">
+    <section id="about" className="bg-beige-100 py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           

@@ -35,7 +35,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="bg-white py-24 lg:py-32">
+    <section id="faq" className="bg-white py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center space-x-4 mb-6">

@@ -12,6 +12,10 @@
   --color-charcoal: #1c1c1c;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-beige-100);
   color: var(--color-charcoal);
