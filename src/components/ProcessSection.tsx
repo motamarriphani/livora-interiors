@@ -70,13 +70,15 @@ export default function ProcessSection() {
                     <Icon size={32} strokeWidth={1.5} className="text-olive-900" />
                   </div>
                   
-                  <h3 className="text-lg font-bold tracking-wide uppercase text-olive-900 mb-3">
-                    {step.title}
-                  </h3>
-                  
-                  <p className="text-olive-900/70 font-light text-sm max-w-[220px]">
-                    {step.description}
-                  </p>
+                  <div className="bg-beige-100 relative z-10 px-4 py-3 -mx-4 flex flex-col items-center">
+                    <h3 className="text-lg font-bold tracking-wide uppercase text-olive-900 mb-3">
+                      {step.title}
+                    </h3>
+                    
+                    <p className="text-olive-900/70 font-light text-sm max-w-[220px]">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
               );
             })}

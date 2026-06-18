@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 export default function WhatsAppButton() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const [isVisible, setIsVisible] = useState(true);
 
   return (
-    <div
-      className={`fixed bottom-6 right-6 z-50 transition-all duration-700 transform ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'
-      }`}
-    >
-      <div className="relative group flex items-center">
+    <div className="fixed bottom-6 right-6 z-[9999]">
+      <div
+        className={`relative group flex items-center transition-all duration-700 ${
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'
+        }`}
+      >
         {/* Tooltip */}
         <div className="absolute right-full mr-4 bg-white text-[#1c1c1c] px-3 py-1.5 rounded shadow-md text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
           Chat with us 💬

@@ -8,7 +8,6 @@ const navLinks = [
   { name: 'Process', href: '#process' },
   { name: 'Portfolio', href: '#portfolio' },
   { name: 'Testimonials', href: '#testimonials' },
-  { name: 'Blog', href: '#blog' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -68,19 +67,22 @@ export default function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  let navClasses = "fixed top-0 left-0 right-0 z-50 px-6 py-4 lg:px-12 flex items-center justify-between transition-all duration-300 ";
+  let navClasses = `fixed top-0 left-0 right-0 z-[60] px-6 py-4 lg:px-12 flex items-center justify-between transition-all duration-300 `;
   let textClasses = "";
   
-  if (isScrolled) {
+  if (isMenuOpen) {
+    navClasses += "bg-[#F2EFEA] text-[#2C3426]";
+    textClasses = "text-[#2C3426]";
+  } else if (isScrolled) {
     if (isDarkTheme) {
-      navClasses += "bg-[#2C3426] border-b border-[#2C3426]";
+      navClasses += "bg-[#2C3426] border-b border-[#2C3426] text-[#F5F3EE]";
       textClasses = "text-[#F5F3EE]";
     } else {
-      navClasses += "bg-[#F2EFEA] border-b border-[rgba(44,52,38,0.1)]";
+      navClasses += "bg-[#F2EFEA] border-b border-[rgba(44,52,38,0.1)] text-[#2C3426]";
       textClasses = "text-[#2C3426]";
     }
   } else {
-    navClasses += "bg-transparent";
+    navClasses += "bg-transparent text-white";
     textClasses = "text-white";
   }
 
@@ -91,7 +93,7 @@ export default function Navbar() {
           <a href="#hero" className="font-serif text-2xl tracking-widest uppercase leading-none mb-1 cursor-pointer">
             LIVORA
           </a>
-          <span className={`text-[0.65rem] tracking-[0.3em] uppercase ${isScrolled && !isDarkTheme ? 'text-[#2C3426]' : 'text-white/80'}`}>
+          <span className={`text-[0.65rem] tracking-[0.3em] uppercase ${isScrolled && !isDarkTheme ? 'text-[#2C3426]' : (isMenuOpen ? 'text-[#2C3426]' : 'text-white/80')}`}>
             Interiors
           </span>
         </div>
@@ -130,18 +132,18 @@ export default function Navbar() {
         </div>
 
         <button 
-          className={`lg:hidden relative z-[60] transition-colors duration-300 ${isMenuOpen ? 'text-[#2C3426]' : textClasses}`}
+          className={`lg:hidden relative z-[60] transition-colors duration-300 ${textClasses}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </nav>
 
       {/* Mobile Drawer */}
       <div 
         className={`fixed inset-0 bg-[#F2EFEA] z-[55] transition-transform duration-300 ease-in-out lg:hidden flex flex-col justify-center items-center space-y-6 ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          isMenuOpen ? 'translate-x-0' : 'translate-x-[100%]'
         }`}
       >
         {navLinks.map((link) => (
