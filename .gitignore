@@ -1,8 +1,11 @@
 node_modules/
 build/
 dist/
+.ssr-build/
 coverage/
 .DS_Store
 *.log
 .env*
-!.env.example
+
+# Cloudflare Wrangler
+.wrangler/

@@ -1,20 +1,29 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Livora Interiors website
 
-# Run and deploy your AI Studio app
+The Livora Interiors marketing site is a React + Vite static website for the Hyderabad and Telangana service area.
 
-This contains everything you need to run your app locally.
+## Local development
 
-View your app in AI Studio: https://ai.studio/apps/e302cdbd-c2af-41fd-b2a1-82fa77513573
+Requirements: Node.js and npm.
 
-## Run Locally
+```sh
+npm install
+npm run dev
+```
 
-**Prerequisites:**  Node.js
+## Checks and production build
 
+```sh
+npm test
+npm run lint
+npm run build
+npm run preview
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+The production build statically renders the homepage into `dist/index.html` so its primary content is present in the HTML response for crawlers and visitors before client-side JavaScript runs.
+
+## Cloudflare Pages
+
+Connect this GitHub repository to Cloudflare Pages using Git integration. Use `main` as the production branch, `npm run build` as the build command, and `dist` as the build output directory. Git integration provides preview deployments for branches and pull requests.
+
+The canonical site URL is `https://thelivorainteriors.com/`. Keep `public/sitemap.xml` and `public/robots.txt` in sync when indexable routes are added.

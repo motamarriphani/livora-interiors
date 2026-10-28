@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "livora-interiors",
+  "compatibility_date": "2026-10-28",
+  "routes": [
+    { "pattern": "thelivorainteriors.com", "custom_domain": true },
+    { "pattern": "www.thelivorainteriors.com", "custom_domain": true }
+  ],
+  // Static site only: Cloudflare serves the prerendered Vite build straight from dist/.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "none"
+  }
+}
