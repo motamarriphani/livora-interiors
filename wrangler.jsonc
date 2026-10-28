@@ -1,14 +1,18 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "livora-interiors",
+  "main": "./worker/index.js",
   "compatibility_date": "2026-10-28",
   "routes": [
     { "pattern": "thelivorainteriors.com", "custom_domain": true },
     { "pattern": "www.thelivorainteriors.com", "custom_domain": true }
   ],
-  // Static site only: Cloudflare serves the prerendered Vite build straight from dist/.
+  // The Worker runs first so it can force HTTPS and redirect www to the apex,
+  // then hands off to the prerendered Vite build in dist/.
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "none"
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    "run_worker_first": true
   }
 }

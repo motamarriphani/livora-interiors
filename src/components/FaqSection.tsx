@@ -10,7 +10,8 @@ const faqSchema = JSON.stringify({
     name: faq.q,
     acceptedAnswer: { '@type': 'Answer', text: faq.a },
   })),
-});
+  // Escape "<" so FAQ text can never close the <script> tag it is embedded in.
+}).replace(/</g, '\\u003c');
 
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
