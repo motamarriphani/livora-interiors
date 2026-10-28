@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "lint": "tsc --noEmit",
-    "test": "npm run build && node --experimental-strip-types --test tests/site-seo.test.mjs",
+    "test": "npm run build && node --experimental-strip-types --test tests/site-seo.test.mjs tests/enquiry.test.mjs",
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
