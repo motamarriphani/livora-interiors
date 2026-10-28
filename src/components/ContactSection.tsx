@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { contactItems, projectTypes } from '../content';
+import { siteConfig } from '../siteConfig';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 import SectionLabel from './SectionLabel';
 
@@ -22,14 +23,28 @@ function validate(form: Record<Field, string>, projectType: string) {
   if (!form.name.trim()) errors.name = true;
   if (form.phone.replace(/\D/g, '').replace(/^91/, '').length !== 10) errors.phone = true;
   if (!projectType) errors.type = true;
-  if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) errors.email = true;
+  if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errors.email = true;
   return errors;
 }
+
+type Status = 'idle' | 'sending' | 'sent' | 'failed';
 
 export default function ContactSection({ projectType, onProjectTypeChange }: ContactSectionProps) {
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<ErrorKey, true>>>({});
-  const [whatsappUrl, setWhatsappUrl] = useState('');
+  const [status, setStatus] = useState<Status>('idle');
+  // Hidden from people; bots that fill it in are quietly ignored by the API.
+  const [website, setWebsite] = useState('');
+
+  const whatsappUrl = buildWhatsAppUrl({
+    firstName: form.name,
+    lastName: '',
+    email: form.email,
+    phone: form.phone,
+    projectType,
+    locality: form.locality,
+    message: form.message,
+  });
 
   const clearError = (key: ErrorKey) =>
     setErrors(({ [key]: _, ...rest }) => rest);
@@ -44,29 +59,31 @@ export default function ContactSection({ projectType, onProjectTypeChange }: Con
     clearError('type');
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (status === 'sending') return;
     const found = validate(form, projectType);
     setErrors(found);
     if (Object.keys(found).length) return;
-    setWhatsappUrl(
-      buildWhatsAppUrl({
-        firstName: form.name,
-        lastName: '',
-        email: form.email,
-        phone: form.phone,
-        projectType,
-        locality: form.locality,
-        message: form.message,
-      }),
-    );
+
+    setStatus('sending');
+    try {
+      const response = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, projectType, website }),
+      });
+      setStatus(response.ok ? 'sent' : 'failed');
+    } catch {
+      setStatus('failed');
+    }
   };
 
   const reset = () => {
     setForm(EMPTY);
     setErrors({});
     onProjectTypeChange('');
-    setWhatsappUrl('');
+    setStatus('idle');
   };
 
   const firstName = form.name.trim().split(' ')[0];
@@ -105,15 +122,14 @@ export default function ContactSection({ projectType, onProjectTypeChange }: Con
       </div>
 
       <div className="rounded-3xl bg-card p-[clamp(24px,4vw,48px)] shadow-[0_30px_60px_-30px_rgba(44,52,38,.3)]">
-        {whatsappUrl ? (
+        {status === 'sent' ? (
           <div role="status" className="flex flex-col items-center gap-3.5 py-8 text-center">
             <span lang="te" className="font-telugu text-[30px] leading-[1.5] text-gold">ధన్యవాదాలు</span>
             <h3 className="font-serif text-[40px] font-light leading-[1.05]">
               Thank you, <span className="italic">{firstName}</span>.
             </h3>
             <p className="max-w-[360px] text-[17px] font-light leading-[1.6]">
-              Your enquiry is ready. Send it to us on WhatsApp and we'll call you back on {form.phone}. Nothing is sent
-              until you tap Send there.
+              We've received your enquiry and will call you on {form.phone} soon. Keep the chai ready.
             </p>
             <a
               href={whatsappUrl}
@@ -121,7 +137,7 @@ export default function ContactSection({ projectType, onProjectTypeChange }: Con
               rel="noopener noreferrer"
               className="mt-3 rounded-full bg-ink px-6 py-4 text-[13px] font-medium uppercase tracking-[.08em] text-paper"
             >
-              Send on WhatsApp →
+              Chat on WhatsApp now →
             </a>
             <button
               type="button"
@@ -132,7 +148,7 @@ export default function ContactSection({ projectType, onProjectTypeChange }: Con
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-[22px]">
+          <form onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-[22px]">
             <h3 className="font-serif text-[30px] font-normal leading-[1.1]">Book a free consultation</h3>
 
             <label className="flex flex-col gap-2">
@@ -229,11 +245,27 @@ export default function ContactSection({ projectType, onProjectTypeChange }: Con
               />
             </label>
 
+            <label aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+              Website
+              <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+            </label>
+
+            {status === 'failed' && (
+              <p role="alert" className="rounded-xl bg-error/10 px-4 py-3 text-[14px] leading-[1.5] text-error">
+                Sorry, we couldn't send your enquiry just now.{' '}
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium underline">
+                  Send it on WhatsApp instead
+                </a>{' '}
+                or call us on {siteConfig.phones[0].display}.
+              </p>
+            )}
+
             <button
               type="submit"
-              className="rounded-full bg-ink p-[18px] text-[13px] font-medium uppercase tracking-[.08em] text-paper"
+              disabled={status === 'sending'}
+              className="rounded-full bg-ink p-[18px] text-[13px] font-medium uppercase tracking-[.08em] text-paper disabled:opacity-60"
             >
-              Request Free Consultation →
+              {status === 'sending' ? 'Sending…' : 'Request Free Consultation →'}
             </button>
           </form>
         )}

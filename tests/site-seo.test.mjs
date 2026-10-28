@@ -66,3 +66,20 @@ test('WhatsApp enquiry URL safely carries submitted contact details', () => {
   assert.match(message, /Gachibowli/);
   assert.match(message, /living room design & storage/);
 });
+
+test('security headers are configured for every route', () => {
+  const headers = readFileSync(path.join(root, 'public', '_headers'), 'utf8');
+  assert.match(headers, /Content-Security-Policy: [^\n]*default-src 'self'/);
+  assert.match(headers, /Content-Security-Policy: [^\n]*script-src 'self'( https:\/\/static\.cloudflareinsights\.com)?;/);
+  assert.match(headers, /Content-Security-Policy: [^\n]*frame-ancestors 'none'/);
+  assert.match(headers, /Strict-Transport-Security: max-age=31536000/);
+  assert.match(headers, /X-Content-Type-Options: nosniff/);
+  assert.match(headers, /Permissions-Policy: /);
+});
+
+test('built page has no inline executable scripts', () => {
+  const html = readFileSync(path.join(root, 'dist', 'index.html'), 'utf8');
+  const inline = [...html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>/g)]
+    .filter(([, attrs]) => !/type="application\/ld\+json"/.test(attrs));
+  assert.deepEqual(inline, []);
+});

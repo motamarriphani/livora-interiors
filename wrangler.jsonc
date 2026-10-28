@@ -1,14 +1,43 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "livora-interiors",
+  "main": "./worker/index.js",
   "compatibility_date": "2026-10-28",
   "routes": [
     { "pattern": "thelivorainteriors.com", "custom_domain": true },
     { "pattern": "www.thelivorainteriors.com", "custom_domain": true }
   ],
-  // Static site only: Cloudflare serves the prerendered Vite build straight from dist/.
+  // The Worker runs first so it can force HTTPS, redirect www to the apex and
+  // handle /api/enquiry, then hands off to the prerendered Vite build in dist/.
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "none"
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    "run_worker_first": true
+  },
+  // Contact form submissions.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "livora-enquiries",
+      "database_id": "24cc6932-5e67-4e88-806f-c307c872885e",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  // New-enquiry alerts. Recipients must be verified Email Routing destination addresses.
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_destination_addresses": [
+        "thelivorainteriors@gmail.com",
+        "dhanumjay7444@gmail.com",
+        "motamarriphani@gmail.com"
+      ]
+    }
+  ],
+  "vars": {
+    "ENQUIRY_FROM": "enquiries@thelivorainteriors.com",
+    "ENQUIRY_TO": "thelivorainteriors@gmail.com",
+    "ENQUIRY_CC": "dhanumjay7444@gmail.com,motamarriphani@gmail.com"
   }
 }
