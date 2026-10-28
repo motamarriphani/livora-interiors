@@ -1,6 +1,0 @@
-{
-  "name": "Livora Interiors",
-  "description": "Modern interior design portfolio",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

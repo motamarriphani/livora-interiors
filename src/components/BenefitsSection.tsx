@@ -1,71 +1,35 @@
-import { Armchair, Star, LayoutTemplate, Leaf } from 'lucide-react';
-import React from 'react';
-import { useFadeInOnScroll } from '../hooks/useFadeInOnScroll';
-
-const benefits = [
-  {
-    icon: Armchair,
-    title: 'Bespoke Designs',
-    description: 'Tailored to your style and needs',
-  },
-  {
-    icon: Star,
-    title: 'Premium Quality',
-    description: 'Finest materials and craftsmanship',
-  },
-  {
-    icon: LayoutTemplate,
-    title: 'End-to-End Service',
-    description: 'From concept to completion',
-  },
-  {
-    icon: Leaf,
-    title: 'Timeless Elegance',
-    description: 'Designs that are beautiful today and always',
-  },
-];
+import { benefits, stats } from '../content';
+import SectionLabel from './SectionLabel';
 
 export default function BenefitsSection() {
-  const { ref, isVisible } = useFadeInOnScroll();
-
   return (
-    <section 
-      id="benefits" 
-      data-theme="dark" 
-      ref={ref}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
-        transition: 'opacity 0.7s ease, transform 0.7s ease'
-      }}
-      className="relative bg-olive-900 z-20"
-    >
-      {/* Decorative Curve - Using SVG for perfect curve overlaying the hero slightly */}
-      <div className="absolute left-0 right-0 top-0 -translate-y-[99%] w-full overflow-hidden leading-none text-olive-900">
-        <svg viewBox="0 0 1440 120" fill="currentColor" className="w-full h-auto" preserveAspectRatio="none">
-          <path d="M0,120 Q720,0 1440,120 L1440,120 L0,120 Z"></path>
-        </svg>
+    <section id="highlights" className="px-page py-[clamp(72px,9vw,112px)]">
+      <div className="mb-[clamp(40px,5vw,56px)] flex flex-col items-center gap-3 text-center">
+        <SectionLabel telugu="ఎందుకు లివోరా?" caption="Enduku Livora? · Why Livora" />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {benefits.map((benefit, index) => {
-            const Icon = benefit.icon;
-            return (
-              <div key={index} className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-full border border-beige-200/20 flex items-center justify-center mb-6 text-beige-100">
-                  <Icon strokeWidth={1} size={28} />
-                </div>
-                <h3 className="text-beige-100 font-medium tracking-wider uppercase text-sm mb-3">
-                  {benefit.title}
-                </h3>
-                <p className="text-beige-200/70 font-light text-sm max-w-[200px]">
-                  {benefit.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {benefits.map(({ icon: Icon, title, desc }) => (
+          <div
+            key={title}
+            className="flex flex-col items-center gap-3.5 rounded-[200px_200px_16px_16px] bg-card px-6 pb-8 pt-12 text-center shadow-[0_14px_30px_-20px_rgba(44,52,38,.3)]"
+          >
+            <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-sand">
+              <Icon size={28} strokeWidth={1.25} />
+            </div>
+            <h3 className="font-serif text-[26px] font-normal">{title}</h3>
+            <p className="text-[15px] font-light leading-[1.55] text-body">{desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-[clamp(40px,5vw,56px)] grid grid-cols-2 gap-6 border-t border-dashed border-gold/60 pt-[clamp(32px,4vw,40px)] text-center md:grid-cols-4">
+        {stats.map((stat) => (
+          <div key={stat.label} className="flex flex-col gap-1.5">
+            <span className="font-serif text-[clamp(44px,5vw,60px)] font-light leading-none">{stat.value}</span>
+            <span className="font-mono text-[11px] uppercase tracking-[.1em] text-moss">{stat.label}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
